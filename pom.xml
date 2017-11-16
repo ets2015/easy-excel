@@ -10,6 +10,15 @@
 
     <packaging>jar</packaging>
 
+
+    <developers>
+        <developer>
+            <name>shinez</name>
+            <email>136266602@qq.com</email>
+            <organization>shinez</organization>
+            <organizationUrl>https://shinezh.cn</organizationUrl>
+        </developer>
+    </developers>
     <dependencies>
         <dependency>
             <groupId>org.apache.poi</groupId>
