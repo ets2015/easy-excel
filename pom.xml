@@ -19,6 +19,13 @@
             <organizationUrl>https://shinezh.cn</organizationUrl>
         </developer>
     </developers>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://raw.githubusercontent.com/xtuhcy/gecco/master/LICENSE</url>
+        </license>
+    </licenses>
     <dependencies>
         <dependency>
             <groupId>org.apache.poi</groupId>
