@@ -6,10 +6,13 @@
 
     <groupId>cn.shinezh</groupId>
     <artifactId>easy-excel</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <version>1.0.RELEASE</version>
 
     <packaging>jar</packaging>
 
+    <name>easy-excel</name>
+    <description>easy-excel is used for excel import and export</description>
+    <url>https://github.com/ets2015/easy-excel</url>
 
     <developers>
         <developer>
