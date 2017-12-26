@@ -48,13 +48,39 @@ public final class ExcelHelper {
             List<String> objectFieldValues = new ArrayList<>();
             Field field;
             for (int i = 0; i < dataFieldNames.length; i++) {
-                field = tClass.getDeclaredField(dataFieldNames[i]);
-                field.setAccessible(true);
+                field = getField(tClass, dataFieldNames[i]);
                 String val = String.valueOf(field.get(obj) == null ? "" : field.get(obj));
                 objectFieldValues.add(val);
             }
             return objectFieldValues;
         }));
+    }
+
+    /**
+     * 通过反射获取该类或其父类属性值
+     *
+     * @param tClass
+     * @param fieldName
+     * @return
+     */
+    private static Field getField(Class tClass, String fieldName) {
+        Field field = null;
+        try {
+            field = tClass.getDeclaredField(fieldName);
+            field.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            Class sClass = tClass.getSuperclass();
+            if (sClass == Object.class) {
+                try {
+                    throw new NoSuchFieldException(e.getMessage());
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                }
+            } else {
+                return getField(sClass, fieldName);
+            }
+        }
+        return field;
     }
 
     /**
@@ -149,9 +175,9 @@ public final class ExcelHelper {
      * 解析Excel导入
      *
      * @param <T>
-     * @param inputStream      输入流
-     * @param tClass    类型
-     * @param fieldsArr 字段名称数组
+     * @param inputStream 输入流
+     * @param tClass      类型
+     * @param fieldsArr   字段名称数组
      * @return 返回对象的List集合
      */
     public static <T> List<T> importFromFile(InputStream inputStream, Class<T> tClass, String... fieldsArr) throws Exception {
@@ -162,7 +188,7 @@ public final class ExcelHelper {
             for (int i = 0; i < fieldsArr.length; i++) {
                 field = tClass.getDeclaredField(fieldsArr[i]);
                 field.setAccessible(true);
-                Object value = DataTypeConverter.parse(field.getType(),columns.get(i));
+                Object value = DataTypeConverter.parse(field.getType(), columns.get(i));
                 field.set(t, value);
             }
 
@@ -175,7 +201,7 @@ public final class ExcelHelper {
     /**
      * 解析Excel导入
      *
-     * @param inputStream        输入流
+     * @param inputStream 输入流
      * @param excelImport 导入接口实现
      * @return 返回对象的List集合
      * @throws IOException
