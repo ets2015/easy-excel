@@ -7,7 +7,7 @@
         <dependency>
             <groupId>com.shinezh</groupId>
             <artifactId>easy-excel</artifactId>
-            <version>1.0.RELEASE</version>
+            <version>1.1.RELEASE</version>
         </dependency>
 ```
 
