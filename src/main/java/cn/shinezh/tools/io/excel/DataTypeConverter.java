@@ -9,7 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Shinez on 2017/11/16.
+ *
+ * @author Shinez
+ * @date 2017/11/16
  */
 public class DataTypeConverter {
 
@@ -38,10 +40,14 @@ public class DataTypeConverter {
     private static SimpleDateFormat monthDateFormat = new SimpleDateFormat("yyyy-MM");
 
     private static Date parseDate(String val) throws ParseException {
-        if ("".equals(val) || null == val) return null;
+        if ("".equals(val) || null == val) {
+            return null;
+        }
 
         String[] dateTimeSpaceArr = val.split(" ");
-        if (dateTimeSpaceArr.length == 0) return null;
+        if (dateTimeSpaceArr.length == 0) {
+            return null;
+        }
 
         if (dateTimeSpaceArr.length == 1) {
             //年月日

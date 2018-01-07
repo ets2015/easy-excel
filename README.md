@@ -92,4 +92,19 @@ public static <T> List<T> importFromFile(InputStream inputStream, Class<T> tClas
  List<String> getColumns(T obj) throws NoSuchFieldException, IllegalAccessException;
 ```
 
+### 范例
+- 导出
+```java
+List<CouponMonthVO> list = couponMonthService.getCouponMonthList(couponMonthVO);
 
+String[] heads = {"卡券名称", "卡券类型", "活动开始时间", "活动结束时间", "卡券图片", "绑定卡券", "会员等级", "状态", "排序"};
+String[] fieldStr = {"name", "typeStr", "startAtStr", "endAtStr", "pic", "couponName", "validLevelName", "statusStr", "sort"};
+
+ExcelHelper.exportFromListToStream(list, heads, fieldStr, CouponMonthVO.class, "会员每月优惠券导出-" + System.currentTimeMillis(), response);
+```
+
+- 导入
+```java
+String[] fieldStr = {"name", "typeStr", "startAtStr", "endAtStr", "pic", "couponName", "validLevelName", "statusStr", "sort"};
+List<CouponMonthVO> couponList = ExcelHelper.importFromInputStream(inputStream,CouponMonthVO.class,fieldStr);
+```

@@ -24,7 +24,9 @@ import java.util.List;
 
 /**
  * Excel工具类
- * Created by ShiNez on 2016-3-12.
+ *
+ * @author ShiNez
+ * @date 2016-3-12
  */
 public final class ExcelHelper {
 
@@ -57,9 +59,7 @@ public final class ExcelHelper {
     }
 
     /**
-<<<<<<< HEAD
      * 导出
-=======
      * 通过反射获取该类或其父类属性值
      *
      * @param tClass
@@ -87,8 +87,7 @@ public final class ExcelHelper {
     }
 
     /**
-     * 导出Excel
->>>>>>> 363ff9682d0a9fcb5ae4596adb66ba15e3317ad2
+     * 导出
      *
      * @param srcList     list集合，数据源
      * @param headNames   表头集合，定义生成的Excel的表头文字
@@ -216,7 +215,9 @@ public final class ExcelHelper {
                 }
                 columns.add(val);
             }
-            if (!allFieldValidFlag) continue;
+            if (!allFieldValidFlag) {
+                continue;
+            }
             List<T> t = excelImport.getObjList(columns);
             list.addAll(t);
         }

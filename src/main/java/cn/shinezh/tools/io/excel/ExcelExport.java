@@ -3,7 +3,9 @@ package cn.shinezh.tools.io.excel;
 import java.util.List;
 
 /**
- * Created by Shinez on 2017/10/19.
+ *
+ * @author Shinez
+ * @date 2017/10/19
  */
 public interface ExcelExport<T> {
 
@@ -12,6 +14,8 @@ public interface ExcelExport<T> {
      *
      * @param obj 泛型T的一个实例
      * @return 一行（多个单元格）的值的集合
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
      */
     List<String> getColumns(T obj) throws NoSuchFieldException, IllegalAccessException;
 
