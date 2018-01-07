@@ -58,7 +58,7 @@ public final class ExcelHelper {
     }
 
     /**
-     * 导出Excel
+     * 导出
      *
      * @param srcList     list集合，数据源
      * @param headNames   表头集合，定义生成的Excel的表头文字
@@ -98,48 +98,25 @@ public final class ExcelHelper {
         }
         return wb;
     }
-
     /**
-     * 导出Excel
+     * 导出
      *
-     * @param srcList     list集合，数据源
-     * @param headNames   表头集合，定义生成的Excel的表头文字
-     * @param folder      目标文件夹，生成的Excel将写入此路径下
-     * @param excelExport 导出实现类
-     * @return
+     * @param list
+     * @param heads
+     * @param fieldStr
+     * @param tClass
+     * @param fileName
+     * @param response
+     * @param <T>
+     * @throws NoSuchFieldException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
      */
-    public static <T> void outputExcelFromList(List<T> srcList, List<String> headNames, String folder, ExcelExport<T> excelExport, OutputStream out) throws NoSuchFieldException, IllegalAccessException, IOException {
-        HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet("sheet1");
-        HSSFRow row0 = sheet.createRow(0);
-        HSSFCellStyle cellStyle = wb.createCellStyle();
-        //粗体
-        HSSFFont font = wb.createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        cellStyle.setFont(font);
-        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        //建立表头
-        for (int i = 0; i < headNames.size(); ++i) {
-            HSSFCell cell = row0.createCell(i);
-            cell.setCellValue(headNames.get(i));
-            cell.setCellStyle(cellStyle);
-        }
-
-        //填充数据
-        HSSFRow row;
-        HSSFCell cell;
-        HSSFCellStyle dataCellStyle = wb.createCellStyle();
-        for (int i = 0; i < srcList.size(); i++) {
-            row = sheet.createRow(i + 1);
-            T obj = srcList.get(i);
-            List<String> columns = excelExport.getColumns(obj);
-            for (int j = 0; j < columns.size(); ++j) {
-                cell = row.createCell(j);
-                cell.setCellValue(columns.get(j));
-                cell.setCellStyle(dataCellStyle);
-                sheet.setDefaultColumnStyle(j, cellStyle);
-            }
-        }
+    public static <T> void exportFromListToStream(List<T> list, String[] heads, String[] fieldStr, Class<T> tClass, String fileName, HttpServletResponse response) throws NoSuchFieldException, InstantiationException, IllegalAccessException, IOException {
+        HSSFWorkbook wb = exportFromList(list, heads, fieldStr, tClass);
+        OutputStream out = response.getOutputStream();
+        response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName + ".xlsx", "UTF-8"));
         wb.write(out);
         out.close();
     }
@@ -154,8 +131,8 @@ public final class ExcelHelper {
      * @param fieldsArr 字段名称数组
      * @return 返回对象的List集合
      */
-    public static <T> List<T> importFromFile(InputStream inputStream, Class<T> tClass, String... fieldsArr) throws Exception {
-        return importFromFile(inputStream, columns -> {
+    public static <T> List<T> importFromInputStream(InputStream inputStream, Class<T> tClass, String... fieldsArr) throws Exception {
+        return importFromInputStream(inputStream, columns -> {
             T t = tClass.newInstance();
             List<T> list = new ArrayList<>();
             Field field;
@@ -180,7 +157,7 @@ public final class ExcelHelper {
      * @return 返回对象的List集合
      * @throws IOException
      */
-    public static <T> List<T> importFromFile(InputStream inputStream, ExcelImport<T> excelImport) throws Exception {
+    public static <T> List<T> importFromInputStream(InputStream inputStream, ExcelImport<T> excelImport) throws Exception {
         Workbook wb;
         Sheet sheet;
         try {
@@ -216,26 +193,5 @@ public final class ExcelHelper {
         return list;
     }
 
-    /**
-     * 导出到文件
-     *
-     * @param list
-     * @param heads
-     * @param fieldStr
-     * @param tClass
-     * @param fileName
-     * @param response
-     * @param <T>
-     * @throws NoSuchFieldException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IOException
-     */
-    public static <T> void exportFromListToStream(List<T> list, String[] heads, String[] fieldStr, Class<T> tClass, String fileName, HttpServletResponse response) throws NoSuchFieldException, InstantiationException, IllegalAccessException, IOException {
-        HSSFWorkbook wb = exportFromList(list, heads, fieldStr, tClass);
-        OutputStream out = response.getOutputStream();
-        response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName + ".xlsx", "UTF-8"));
-        wb.write(out);
-        out.close();
-    }
+
 }
