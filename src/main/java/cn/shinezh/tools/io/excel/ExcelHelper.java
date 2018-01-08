@@ -127,6 +127,7 @@ public final class ExcelHelper {
         }
         return wb;
     }
+
     /**
      * 导出
      *
@@ -193,6 +194,10 @@ public final class ExcelHelper {
             wb = new XSSFWorkbook(inputStream);
         } catch (Exception e) {
             wb = new HSSFWorkbook(inputStream);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
         sheet = wb.getSheetAt(0);
         List<T> list = new ArrayList<>();
