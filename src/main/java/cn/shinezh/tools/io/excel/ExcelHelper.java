@@ -156,13 +156,14 @@ public final class ExcelHelper {
      * 解析Excel导入
      *
      * @param <T>
+     * @param fileName 文件名 如：test.xlsx
      * @param inputStream 输入流
      * @param tClass      类型
      * @param fieldsArr   字段名称数组
      * @return 返回对象的List集合
      */
-    public static <T> List<T> importFromInputStream(InputStream inputStream, Class<T> tClass, String... fieldsArr) throws Exception {
-        return importFromInputStream(inputStream, columns -> {
+    public static <T> List<T> importFromInputStream(String fileName,InputStream inputStream, Class<T> tClass, String... fieldsArr) throws Exception {
+        return importFromInputStream(fileName,inputStream, columns -> {
             T t = tClass.newInstance();
             List<T> list = new ArrayList<>();
             Field field;
@@ -187,13 +188,18 @@ public final class ExcelHelper {
      * @return 返回对象的List集合
      * @throws IOException
      */
-    public static <T> List<T> importFromInputStream(InputStream inputStream, ExcelImport<T> excelImport) throws Exception {
-        Workbook wb;
+    public static <T> List<T> importFromInputStream(String fileName,InputStream inputStream, ExcelImport<T> excelImport) throws Exception {
+        Workbook wb = null;
         Sheet sheet;
+
         try {
-            wb = new XSSFWorkbook(inputStream);
+            if(fileName.indexOf("xlsx") !=-1){
+                wb = new XSSFWorkbook(inputStream);
+            }else{
+                wb = new HSSFWorkbook(inputStream);
+            }
         } catch (Exception e) {
-            wb = new HSSFWorkbook(inputStream);
+            e.printStackTrace();
         } finally {
             if (inputStream != null) {
                 inputStream.close();
