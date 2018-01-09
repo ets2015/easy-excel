@@ -193,13 +193,11 @@ public final class ExcelHelper {
         Sheet sheet;
 
         try {
-            if(fileName.indexOf(".xlsx")!=-1){
+            if(fileName.contains(".xlsx")){
                 wb = new XSSFWorkbook(inputStream);
             }else{
                 wb = new HSSFWorkbook(inputStream);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             if (inputStream != null) {
                 inputStream.close();
